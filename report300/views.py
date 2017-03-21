@@ -22,7 +22,7 @@ def index(request):
         newuser,sum,heros=stats(username)
         sum_avg={}
         for key,value in sum.items():
-            sum_avg[key]=float(value/newuser.user_info['totalplays'])
+            sum_avg[key]=float(value)/float(newuser.user_info['totalplays'])
 
         stat_per=str(len(newuser.match_info))+'/'+str(newuser.user_info['totalplays'])
 
