@@ -3,12 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>300英雄战绩统计</title>
+    <style type="text/css">
+<!--
+.STYLE1 {
+	font-size: 14px;
+	color: #666666;
+	font-style: italic;
+}
+-->
+    </style>
 </head>
 <body>
 <form method='post'>
-<table>{{ form.as_table }}</table>
-    <input type="text" name="username" maxlength="32">
-    <input type="submit" value="提交">
+<table>
+    <tr><td width="96"><label>角色名:</label></td><td><input type="text" name="username" maxlength="32"></td></tr>
+    <tr><td><label>查询间隔:</label></td><td><input type="number" step="0.01" name="time_split" maxlength="10" value="0.2"></td><td>
+        <p class="STYLE1">设置获取比赛数据的间隔,查询总时间=查询间隔*游戏局数,最好不要设置太长...</p></td>
+    </tr>
+    <tr><td><input type="submit" value="提交"></td></tr>
+</table>
 </form>
 </body>
 </html>

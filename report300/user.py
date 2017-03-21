@@ -8,9 +8,11 @@ from time import sleep
 import threading
 from time import sleep
 #from urllib3.exceptions import NewConnectionError
+TIME_SPLIT2=2
 
 class User():
     def __init__(self,name):
+        self.TIME_SPLIT=0.2
         self.name=name
         self.base_url = "http://300report.jumpw.com/list.html?name=%s"%name
         self.match_info=[]
@@ -32,9 +34,10 @@ class User():
                  for match_urlsi in match_urls]
         for t in threads:
             try:
+                sleep(self.TIME_SPLIT)
                 t.start()
-                sleep(0.05)
             except:
+                sleep(1)
                 pass
         #match_urls = re.findall(re_match_url, html.text)
 
@@ -44,10 +47,15 @@ class User():
         match_urls=[]
         pages=int((self.user_info['totalplays']-1)/10)
         for i in range(1,pages+2):
-            content=requests.get(self.base_url+"&index=%s"%str((i-1)*10)).text
-            tmplist=re.findall(re_match_url,content)
-            for l in tmplist:
-                match_urls.append("http://300report.jumpw.com/"+l)
+            try:
+                sleep(TIME_SPLIT2)
+                content=requests.get(self.base_url+"&index=%s"%str((i-1)*10)).text
+                tmplist=re.findall(re_match_url,content)
+                for l in tmplist:
+                    match_urls.append("http://300report.jumpw.com/"+l)
+            except:
+                sleep(TIME_SPLIT2)
+                continue
         return match_urls
 
     def find_match_content(self,match_url):
