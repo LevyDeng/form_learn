@@ -4,15 +4,15 @@
     <title>统计结果</title>
 </head>
 <body>
-<p>数据统计率:{{ stat_per }}</p><p>由于网络原因,会有部分数据丢失</p>
+<p>数据统计率:{{ stat_per }}</p><p>(由于网络原因,会有部分数据丢失)</p>
 <table>
 <i width="283" border="1">
   <tr>
     <td width="168">常用英雄</td>
     <td width="168">选择次数</td>
   </tr>
-{% for key,value in heros.items %}
-    <tr><td>{{ key }}</td><td>{{ value }}</td></tr>
+{% for h in heros %}
+    <tr><td>{{ h.0 }}</td><td>{{ h.1 }}</td></tr>
 {% endfor %}
 </table>
 <p>--------------------------------------------------</p>

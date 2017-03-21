@@ -5,6 +5,7 @@ from .user import User
 
 # Create your views here.
 TIME_SPLIT=0.2
+HERO_SHOWS=10
 
 def form(request):
     a={'1':1,'2':2,'3':3,'4':4,'5':5}
@@ -23,12 +24,12 @@ def index(request):
         sum_avg={}
         for key,value in sum.items():
             sum_avg[key]=float(value)/float(newuser.user_info['totalplays'])
+            sum_avg[key]=float('%.2f'%sum_avg[key])
 
         stat_per=str(len(newuser.match_info))+'/'+str(newuser.user_info['totalplays'])
-
-        sorted_heros={}
-        for h in sorted(heros,reverse=True):
-            sorted_heros[h]=heros[h]
+        sorted_heros=sorted(heros.items(),key=lambda i:i[1],reverse=True)
+        if len(sorted_heros)>HERO_SHOWS:
+            sorted_heros=sorted_heros[:HERO_SHOWS]
 
         print sum_avg
         print sorted_heros
@@ -44,27 +45,26 @@ def stats(name):
     #print newuser.user_info
     #print newuser.match_info
     #print '\n'
-    sum = {'kills':0,'dies':0,'helps':0,'buildings':0\
-           ,'soldiers':0,'golds':0}
+    sum = {'平均杀人次数':0,'平均死亡次数':0,'平均助攻次数':0,'平均摧毁建筑':0\
+           ,'平均补兵':0,'平均获取金币':0}
     heros={}
     for mi in newuser.match_info:
         #print mi
         #print mi['kills']
         kill=mi['kills'].split('/')
         #print kill
-        sum['kills'] = sum['kills']+int(kill[0])
-        sum['dies'] = sum['dies'] + int(kill[1])
-        sum['helps'] = sum['helps'] + int(kill[2])
-        sum['buildings']=sum['buildings']+mi['buildings']
-        sum['soldiers']=sum['soldiers']+mi['soldiers']
-        sum['golds']=sum['golds']+mi['golds']
+        sum['平均杀人次数'] = sum['平均杀人次数']+int(kill[0])
+        sum['平均死亡次数'] = sum['平均死亡次数'] + int(kill[1])
+        sum['平均助攻次数'] = sum['平均助攻次数'] + int(kill[2])
+        sum['平均摧毁建筑']=sum['平均摧毁建筑']+mi['buildings']
+        sum['平均补兵']=sum['平均补兵']+mi['soldiers']
+        sum['平均获取金币']=sum['平均获取金币']+mi['golds']
         hero=mi['hero'].strip().encode('utf8')
         if heros.has_key(hero):
             heros[hero]=heros[hero]+1
         else:
             heros[hero]=1
-    print sum['kills']
-    print heros
+    #print heros
 
     return newuser,sum,heros
 
