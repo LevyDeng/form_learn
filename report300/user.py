@@ -7,7 +7,7 @@ from urllib import quote
 from time import sleep
 import threading
 from time import sleep
-from urllib3.exceptions import NewConnectionError
+#from urllib3.exceptions import NewConnectionError
 
 class User():
     def __init__(self,name):
@@ -34,7 +34,7 @@ class User():
             try:
                 t.start()
                 sleep(0.05)
-            except Exception:
+            except:
                 pass
         #match_urls = re.findall(re_match_url, html.text)
 
