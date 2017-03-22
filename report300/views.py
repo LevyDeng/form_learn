@@ -21,12 +21,15 @@ def index(request):
             TIME_SPLIT=float(request.POST['time_split'.strip()])
         #print username
         newuser,sum,heros=stats(username)
+        if newuser==False:
+            return render(request,'index.html',{"name_error":"未找到该用户"})
+        #print newuser
         sum_avg={}
         for key,value in sum.items():
-            sum_avg[key]=float(value)/float(newuser.user_info['totalplays'])
+            sum_avg[key]=float(value)/float(len(newuser.match_info))
             sum_avg[key]=float('%.2f'%sum_avg[key])
 
-        stat_per=str(len(newuser.match_info))+'/'+str(newuser.user_info['totalplays'])
+        stat_per=str(len(newuser.match_info))+'/'+str(len(newuser.match_urls))
         sorted_heros=sorted(heros.items(),key=lambda i:i[1],reverse=True)
         if len(sorted_heros)>HERO_SHOWS:
             sorted_heros=sorted_heros[:HERO_SHOWS]
@@ -41,6 +44,8 @@ def index(request):
 
 def stats(name):
     newuser = User(name.strip())
+    if newuser.USER_VALID==False:
+        return False,1,1
     newuser.TIME_SPLIT=TIME_SPLIT
     #print newuser.user_info
     #print newuser.match_info
